@@ -1,14 +1,18 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "/*": ["./*"]
+    },
     "esModuleInterop": true,
     "jsx": "react",
     "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
     "lib": ["dom", "esnext"],
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "strict": true,
     "target": "es5"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "babel.config.js"]
 }
