@@ -5,38 +5,48 @@ import Input from '../UI/Forms/Input';
 import Modal from '../UI/Modal';
 import useForm from '/src/hooks/forms/useForm';
 import useStore from '/src/store';
+import { Round } from '/src/store/slices/gameSlice';
 import { roundValidate } from '/src/utils/validation';
 
 interface RoundModalProps {
     open: boolean;
     closeModal: () => void;
     playerId: number | null;
+    round: Round | null;
 }
 
-const RoundModal: FunctionalComponent<RoundModalProps> = ({ open, closeModal, playerId }) => {
+const RoundModal: FunctionalComponent<RoundModalProps> = ({ open, closeModal, playerId, round }) => {
+    const editMode = !!round && round.id !== null;
     const addRound = useStore(state => state.addRound);
-    const close = () => {
-        closeModal();
-        reset();
-    }
+    const editRound = useStore(state => state.editRound);
+
     const submit = (data: typeof initValues) => {
-        playerId != null && addRound(playerId, data);
-        close();
+        const hasPlayerId = playerId != null;
+        console.log(playerId);
+        if(editMode){
+            console.log(round.id);
+            hasPlayerId && editRound(playerId, round.id, data);
+        } else {
+            hasPlayerId && addRound(playerId, data);
+        }
+        closeModal();
     }
+
     const initValues = {
-        base: '',
-        points: ''
+        base: editMode ? round.base : '',
+        points: editMode ? round.points: ''
     }
-    const { onBlur, onInput, onSubmit, values, errors, reset } = useForm<typeof initValues>(submit, initValues, roundValidate);
+    
+    const { onBlur, onInput, onSubmit, values, errors } = useForm<typeof initValues>(submit, initValues, roundValidate);
     return (
-        <Modal open={open} closeModal={close}>
+        <Modal open={open} closeModal={closeModal}>
             <section>
-                <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit} name="round-form">
                     <Input name='base' type='number' value={values.base} onInput={onInput} onBlur={onBlur} label="Base" />
                     <Error text={errors.base} className="mt-2"/>
                     <Input name='points' type='number' value={values.points} onInput={onInput} onBlur={onBlur} label="Puntos" className='mt-4' />
                     <Error text={errors.points} className="mt-2"/>
-                    <NormalButton text='Agregar' as="button" className="mx-auto w-full mt-4" />
+                    <NormalButton text={ editMode ? 'Editar' : 'Agregar'} as="button" className="mx-auto w-full mt-4" />
                 </form>
             </section>
         </Modal>

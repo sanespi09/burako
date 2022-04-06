@@ -9,6 +9,8 @@ interface NormalButtonProps {
     text: string;
     href?: string;
     className?: string;
+    type?: string;
+    form?: string
 }
 
 const sizes = {
@@ -17,13 +19,13 @@ const sizes = {
     lg: 'w-40'
 }
  
-const NormalButton: FC<NormalButtonProps> = ({as, icon, text, size, href, className}) => {
+const NormalButton: FC<NormalButtonProps> = ({as, icon, text, size, href, className, type, form}) => {
     const Tag = as;
     const Icon = icon;
     const sizeClass = size && sizes[size];
 
     return ( 
-        <Tag href={href} className={cx('rounded-lg bg-blue-400 active:bg-blue-600 flex justify-center py-3', sizeClass, className)}>
+        <Tag href={href} type={type} form={form} className={cx('rounded-lg bg-blue-400 active:bg-blue-600 flex justify-center py-3', sizeClass, className)}>
             { Icon ? <Icon /> : null }
             <h3 className='text-md text-white'>{text}</h3>
         </Tag>

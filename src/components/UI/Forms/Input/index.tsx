@@ -8,7 +8,7 @@ interface InputProps {
     onBlur?: (e: Event) => void;
     onInput?: (e: Event) => void;
     name: string;
-    value: string;
+    value: string | number;
     type?: 'number' | 'text';
 }
  

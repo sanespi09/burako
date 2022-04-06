@@ -1,10 +1,11 @@
 import { GetState, SetState } from "zustand";
+import { numberify } from "/src/utils/casting/numberify";
 import { createGameId } from "/src/utils/id";
 
-interface Round {
-    base?: string,
-    points?: string,
-    result: number
+export interface Round {
+    id: number;
+    base: number,
+    points: number,
 }
 
 export interface Player {
@@ -22,7 +23,9 @@ export interface Game {
 export interface GameSliceState {
     game: Game | null;
     createGame: (playersName: string[], winScore: number) => number;
+    editRound: (playerId: number, roundId: number, edit: any) => void;
     addRound: (playerId: number, round: any) => void;
+    deleteRound: (playerId: number, roundId: number) => void;
 }
 
 export type GameSlice = (set: SetState<GameSliceState>, get: GetState<GameSliceState>) => GameSliceState;
@@ -36,7 +39,7 @@ const createGame = (set: SetState<GameSliceState>) => {
             rounds: [],
         }))
         const game: Game = { id: id, players, winScore };
-        set(state => ({ game }));
+        set(_state => ({ game }));
         return id;
     }
 }
@@ -46,10 +49,48 @@ const addRound = (set: SetState<GameSliceState>, get: GetState<GameSliceState>) 
         const players = get().game?.players.slice() as Player[];
         const currentPlayerIndex = players.findIndex(player => player.id === playerId);
         const currentPlayer = players[currentPlayerIndex];
-        console.log(currentPlayer.rounds);
-        const fullRound = getFullRound(currentPlayer, round);
-        currentPlayer.rounds.push(fullRound);
-        console.log(currentPlayer);
+        round.id = currentPlayer.rounds.length;
+        const roundNumber = numberify<Round>(round); 
+        currentPlayer.rounds.push(roundNumber);
+
+        set(state => ({
+            game: {
+                ...state.game as Game,
+                players
+            }
+        }))
+    }
+}
+
+const editRound = (set: SetState<GameSliceState>, get: GetState<GameSliceState>) => {
+    return (playerId: number, roundId: number, edit: any) => {
+        const players = get().game?.players.slice() as Player[];
+        const currentPlayer = players.find(player => player.id === playerId) as Player;
+        const selectedRoundIndex = currentPlayer?.rounds.findIndex(round => roundId === round.id);
+        const selectedRound = currentPlayer.rounds[selectedRoundIndex];
+        const editNumber = numberify<Round>(edit);
+
+        editNumber.id = selectedRound?.id;
+        
+        currentPlayer.rounds[selectedRoundIndex] = editNumber;
+
+        set(state => ({
+            game: {
+                ...state.game as Game,
+                players
+            }
+        }))
+    }
+}
+
+const deleteRound = (set: SetState<GameSliceState>, get: GetState<GameSliceState>) => {
+    return (playerId: number, roundId: number) => {
+        const players = get().game?.players.slice() as Player[];
+        const currentPlayer = players.find(player => player.id === playerId) as Player;
+        const newRounds = currentPlayer?.rounds.filter(round => roundId !== round.id);
+        
+        currentPlayer.rounds = newRounds;
+
         set(state => ({
             game: {
                 ...state.game as Game,
@@ -62,15 +103,7 @@ const addRound = (set: SetState<GameSliceState>, get: GetState<GameSliceState>) 
 export const gameSlice: GameSlice = (set: SetState<GameSliceState>, get: GetState<GameSliceState>) => ({
     game: null,
     createGame: createGame(set),
-    addRound: addRound(set, get)
+    addRound: addRound(set, get),
+    editRound: editRound(set, get),
+    deleteRound: deleteRound(set, get)
 })
-
-const getFullRound = (currentPlayer: Player, round: any) => {
-    console.log(currentPlayer);
-    const lastResult = currentPlayer.rounds.slice().pop()?.result;
-    const roundResult = Number(round.base) + Number(round.points);
-    return {
-        ...round,
-        result: lastResult ? lastResult + roundResult : roundResult
-    };
-}

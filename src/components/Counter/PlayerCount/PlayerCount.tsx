@@ -1,12 +1,13 @@
 import { h, FunctionalComponent } from 'preact';
-import RoundedButton from '../UI/Buttons/Rounded';
-import { Player } from '/src/store/slices/gameSlice';
+import RoundedButton from '../../UI/Buttons/Rounded';
+import { Player, Round as RoundType } from '/src/store/slices/gameSlice';
 import cx from 'classnames';
+import PlayerRound from './PlayerRound';
 
 interface PlayerCountProps {
     player: Player;
     index: number;
-    openModal: (playerId: number) => void;
+    openModal: (playerId: number, round?: RoundType) => void;
 }
 
 const PlayerCount: FunctionalComponent<PlayerCountProps> = ({ player, index, openModal }) => {
@@ -16,17 +17,13 @@ const PlayerCount: FunctionalComponent<PlayerCountProps> = ({ player, index, ope
         <ul className={cx('border-white w-full flex-1 min-h-full pb-4', {
             "border-l-4": hasBorder,
         })}>
-            {rounds.map((round) => (
-                <li className="text-white font-bold">
-                    <div className="border-b-4 flex flex-col items-center gap-y-2 py-2">
-                        <h3>{round.base}</h3>
-                        <h3>{round.points}</h3>
-                    </div>
-                    <div className='flex flex-col items-center pt-2'>
-                        <h3>{round.result}</h3>
-                    </div>
-                </li>
-            ))}
+            {rounds.map( (round, i) => {
+                const prevRound = rounds[i - 1];
+                const prevResult = prevRound ? prevRound.base + prevRound.points : 0;
+                return (
+                     <PlayerRound round={round} openModal={openModal} prevResult={prevResult} playerId={player.id}/> 
+                )
+            })}
             <li className={cx('w-full flex border-white justify-center mt-4', {
             })}>
                 <RoundedButton as="button" text="+" size='md' onClick={() => openModal(player.id)} />

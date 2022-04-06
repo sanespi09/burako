@@ -2,6 +2,7 @@ import { h, FunctionalComponent, Fragment } from 'preact';
 import { createPortal } from 'preact/compat';
 import { useEffect } from 'preact/hooks';
 import cx from 'classnames';
+import { useStopPropagation } from '/src/hooks/events/useStopPropagation';
 
 interface ModalProps {
     open: boolean;
@@ -28,12 +29,12 @@ const ModalContainer: FunctionalComponent<ModalContainerProps> = ({ children, cl
     })
 
     return (
-        <div className={cx('flex justify-center items-center fixed top-0 left-0 h-screen w-screen transition-all', {
+        <div className={cx('flex justify-center items-center fixed top-0 left-0 h-screen w-screen transition-all z-10', {
             'visible opacity-100' : open,
             'invisible opacity-0' : !open
         })}>
             <div className={cx("h-screen w-screen blur-sm fixed top-0 left-0 z-25 bg-blue-300 opacity-50",{
-            })} onClick={closeModal}/>
+            })} onClick={(event) => {event.stopPropagation(); closeModal()}}/>
             <div className={cx('bg-blue-800 w-60 rounded-xl fixed border-blue-400 border-2 p-4 transition')}>    
                 {children}
             </div>
@@ -46,6 +47,9 @@ const Modal: FunctionalComponent<ModalProps> = ({ children, open, closeModal }) 
     if (!modalContainer) {
         return null;
     }
+
+    useStopPropagation(modalContainer);
+
     return (
         <>
             {createPortal(

@@ -1,4 +1,4 @@
-import { useState , useCallback} from 'preact/hooks';
+import { useState , useCallback } from 'preact/hooks';
 
 interface FormState<T> {
     values: T;
@@ -18,6 +18,7 @@ function useForm <T>(submit: SubmitFn<T>, initValues: T, validation: (value: str
     const onInput = (e: Event) => {
         const target = e.target as HTMLInputElement;
         const inputName = target.name;
+        console.log(target.value);
         const newValues = { ...formState.values, [inputName]: target.value };
         setFormState({ ...formState, values: newValues });
     };
@@ -35,8 +36,10 @@ function useForm <T>(submit: SubmitFn<T>, initValues: T, validation: (value: str
         e.stopPropagation();
         const errorsList = validateAll<T>(formState.values);
         if (errorsList) {
+            console.log('setting form state');
             setFormState({ ...formState, errors: errorsList })
         } else {
+            console.log('continue...')
             submit(formState.values);
         }
     }
