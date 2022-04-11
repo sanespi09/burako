@@ -4,6 +4,7 @@ import { Route, Router } from 'wouter-preact';
 import Home from "./pages/Home";
 import CreateGame from "./pages/CreateGame";
 import Game from "./pages/Game";
+import ContinueGame from "./pages/ContinueGame";
 
 const App = () => {
     return (
@@ -15,8 +16,11 @@ const App = () => {
                 <Route path="/create-game">
                     <CreateGame />
                 </Route>
+                <Route path="/continue-game">
+                    <ContinueGame />
+                </Route>
                 <Route path="/game/:id">
-                    <Game />
+                   {params => <Game id={params.id}/>}
                 </Route>
             </Router>
         </Layout>

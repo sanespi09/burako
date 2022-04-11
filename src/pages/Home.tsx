@@ -3,11 +3,11 @@ import {h} from 'preact';
 import { Link } from 'wouter';
 import RoundedButton from '../components/UI/Buttons/Rounded';
 import useStore from '../store';
-import { Game } from '../store/slices/gameSlice';
- 
+
 const Home: FC = () => {
 
-    const currentGame = useStore(state => state.game) as any;
+    const games = useStore(state => state.games);
+    const hasGames = !!games.length;
 
     return ( 
         <section className='px-6 pt-10'>
@@ -21,7 +21,7 @@ const Home: FC = () => {
                     <Link href='/create-game/'>
                         <RoundedButton text="Nuevo juego" as="a" size="lg"/>
                     </Link>
-                    { currentGame ? <Link href={`/game/${currentGame?.id}`}>
+                    { hasGames ? <Link href='/continue-game/'>
                         <RoundedButton text="Continuar juego" as="a" size="lg"/>
                     </Link> : null}
                 </ul>

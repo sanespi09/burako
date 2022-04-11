@@ -1,14 +1,26 @@
 import {h, FunctionalComponent} from 'preact';
+import { useEffect } from 'preact/hooks';
 import Counter from '../components/Counter';
 import useStore from '../store';
 
-const Game: FunctionalComponent = () => {
+interface GameProps {
+    id: string;
+}
 
-    const currentGame = useStore(state => state.game);
+const Game: FunctionalComponent<GameProps> = () => {
+    const game = useStore(state => state.currentGame);
+    const saveCurrentGame = useStore(state => state.saveCurrentGame);
 
+    useEffect(() => {
+        return () => {
+            console.log('saving...');
+            saveCurrentGame();
+        }
+    })
+    
     return ( 
         <section className='flex justify-center p-6 h-full' style={{ height: 'calc(100vh - 48px)'}}>
-            <Counter currentGame={currentGame} className="w-full bg-blue-600 rounded-xl h-full"/>
+            <Counter currentGame={game} className="w-full bg-blue-600 rounded-xl h-full"/>
         </section>
      );
 }

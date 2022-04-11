@@ -40,10 +40,10 @@ const PlayerRound: FunctionalComponent<RoundProps> = ({ round, prevResult, openM
         "bg-blue-400": clicked
     })} 
     onClick={handleClick} ref={ref}>
-        <div onClick={(event) => {event.stopPropagation(); deleteRound(playerId, round.id)}} className={cx('absolute top-1 right-2 rotate-45 text-lg transition z-5', {
+        <div onClick={(event) => {event.stopPropagation(); deleteRound(playerId, round.id)}} className={cx('absolute top-0 right-0 text-lg transition z-5 p-2', {
             "visible opacity-100": clicked,
             "invisible opacity-0": !clicked
-        })}>+</div>
+        })}><span className='rotate-45'>+</span></div>
         <div className="border-b-4 flex flex-col items-center gap-y-2 py-2">
             <h3>{round.base}</h3>
             <h3>{round.points}</h3>

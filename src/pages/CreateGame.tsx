@@ -17,8 +17,6 @@ const initValues = { firstTeam: '', secondTeam: '', winScore: 2000 };
 
 const CreateGame: FC = () => {
     const createGame = useStore(state => state.createGame);
-    const currentGame = useStore(state => state.game);
-    console.log(currentGame);
     
     const submit = (data: typeof initValues) => {
         const id = createGame([data.firstTeam, data.secondTeam], data.winScore);
