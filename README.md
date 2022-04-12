@@ -7,3 +7,7 @@ It was made with the following stack:
 - Tailwind
 - Jest
 - Parcel
+
+## Try it
+
+[Burako](https://burako.pages.dev)
