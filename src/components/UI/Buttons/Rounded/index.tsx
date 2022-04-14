@@ -11,9 +11,9 @@ interface RoundedButtonProps {
 }
 
 const sizes = {
-    sm: 'w-8 h-8',
-    md: 'w-16 h-16',
-    lg: 'w-32 h-32'
+    sm: 'w-8 h-8 text-sm',
+    md: 'w-16 h-16 text-lg',
+    lg: 'w-32 h-32 text-xl'
 }
  
 const RoundedButton: FC<RoundedButtonProps> = ({as, icon, text, size, href, onClick}) => {
@@ -24,7 +24,7 @@ const RoundedButton: FC<RoundedButtonProps> = ({as, icon, text, size, href, onCl
     return ( 
         <Tag href={href} onClick={onClick} className={'rounded-full bg-blue-400 active:bg-blue-600 flex flex-col justify-center items-center ' + sizeClass}>
             { Icon ? <Icon /> : null }
-            <h3 className='text-md text-white'>{text}</h3>
+            <h3 className='text-white'>{text}</h3>
         </Tag>
      );
 }

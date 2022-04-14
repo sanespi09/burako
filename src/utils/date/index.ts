@@ -1,10 +1,12 @@
 export const getRelativeDate = (date: string) => {
-    const [ givenDate, givenTime ] = date.split(',');
+    const [ givenDate, givenTime ] = date.split(' ');
     const today = new Date();
     const yesterday = getYesterday();
 
     const todayDate = getDate(today);
     const yesterdayDate = getDate(yesterday);
+
+    console.log(givenDate, todayDate, yesterdayDate);
 
     switch(true){
         case todayDate === givenDate: 
@@ -26,4 +28,4 @@ const getYesterday = () => {
     return now;
 }
 
-const getDate = (date: Date) => date.toLocaleString().split(',')[0];
+const getDate = (date: Date) => date.toLocaleString('en-GB').split(' ')[0];

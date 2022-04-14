@@ -4,6 +4,7 @@ export const useOutsideClick = (element: HTMLElement, callback: (e: MouseEvent) 
     const handleOutsideClick = (event: MouseEvent) => {
         event.stopPropagation();
         const target = event.target as HTMLElement;
+        console.log(target);
         if (element && !element.contains(target)) {
             callback(event);
         }

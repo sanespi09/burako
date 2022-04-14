@@ -5,6 +5,7 @@ import PlayerCount from './PlayerCount/PlayerCount';
 import { useState } from 'preact/hooks';
 import RoundModal from './RoundModal';
 import { useTransitionDebounce } from '../../hooks/debounce/useTransitionDebounce';
+import PlayerName from './PlayerName';
 
 interface CounterProps {
     currentGame: Game | null;
@@ -35,15 +36,13 @@ const Counter: FunctionalComponent<CounterProps> = ({ currentGame, className }) 
     const players = currentGame?.players;
     return (
         <div className={className}>
-            {showModal ? <RoundModal open={modalState.open} closeModal={closeModal} playerId={modalState.playerId} round={modalState.round} /> : null}
+            {showModal ? 
+                <RoundModal open={modalState.open} closeModal={closeModal} playerId={modalState.playerId} round={modalState.round} /> 
+                : null}
             <section className='text-white w-full h-full flex flex-col'>
                 <div className='border-b-4 border-white w-full flex'>
                     {players.map((player, index) => (
-                        <th className={cx('border-white text-center w-full py-2', {
-                            "border-l-4": index === 1
-                        })}>
-                            {player.name}
-                        </th>
+                        <PlayerName player={player} index={index} />
                     ))
                     }
                 </div>
