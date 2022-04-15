@@ -46,10 +46,9 @@ const PlayerName: FunctionalComponent<PlayerNameProps> = ({
                 className="bg-transparent font-bold w-full border-0 outline-none text-center"
                 value={player.name}
                 minLength={1}
+                maxLength={10}
                 readOnly={!edit}
                 required
-                type="text"
-                autoFocus
             />
         </th>
     );
