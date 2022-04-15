@@ -48,7 +48,7 @@ const PlayerName: FunctionalComponent<PlayerNameProps> = ({
                 minLength={1}
                 readOnly={!edit}
                 required
-                type="string"
+                type="text"
                 autoFocus
             />
         </th>

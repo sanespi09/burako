@@ -26,7 +26,7 @@ const PlayerCount: FunctionalComponent<PlayerCountProps> = ({ player, index, ope
             })}
             <li className={cx('w-full flex border-white justify-center mt-4', {
             })}>
-                <RoundedButton as="button" text="+" size='md' onClick={() => openModal(player.id)} />
+                <RoundedButton as="button" text="+" size='md' className='text-xl' onClick={() => openModal(player.id)} />
             </li>
         </ul>
     );
