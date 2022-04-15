@@ -53,9 +53,10 @@ const PlayerName: FunctionalComponent<PlayerNameProps> = ({
                 value={player.name}
                 onTouchStart={handleNameClick}
                 minLength={1}
+                maxLength={10}
                 readOnly={!edit}
+                type="text"
                 required
-                type="string"
             />
         </th>
     );
